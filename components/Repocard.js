@@ -13,6 +13,8 @@ const Repocard = ({
   repositories,
   starCount,
 }) => {
+
+  
   return (
     <div className="bg-inputBG md:p-8 p-4 text-white rounded-xl relative">
       <div className="space-y-6 pb-14 lg:pb-0">
@@ -27,7 +29,7 @@ const Repocard = ({
         </section>
         <section className="text-grey flex lg:flex-col  items-end lg:space-y-2 space-x-2 lg:space-x-0 absolute lg:top-0 lg:right-8 bottom-4 left-4">
           {/* <h1 className="font-Ralweay_thin">13th Aug 2022</h1> */}
-          <BsBookmark className="font-Ralweay_bold hover:text-white text-2xl" />
+          <BsBookmark className="font-Ralweay_bold hover:text-white text-2xl" onClick={handleBookmark}/>
         </section>
         <button className="bg-green px-4 py-2 rounded-xl text-white absolute bottom-8  md:right-8 right-4 ">
           See info

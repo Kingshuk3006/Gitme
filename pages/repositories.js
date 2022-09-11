@@ -122,7 +122,7 @@ const Dashboard = () => {
             </div>
           ) : (
             <div className="text-2xl text-white flex justify-center items-center h-[50vh]">
-              *Enter Language and Sort
+              *Choose language and Sort Type Before Start!!
             </div>
           )}
         </div>
