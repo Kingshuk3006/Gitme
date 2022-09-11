@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Repocard from "../components/Repocard";
 import Sidebar from "../components/sidebar";
@@ -9,11 +9,23 @@ import { language } from "../languages";
 import { GoSearch } from "react-icons/go";
 import LowerNav from "../components/LowerNav";
 import axios from "axios";
+
 const Dashboard = () => {
-  const { data: session, status } = useSession();
+  const {data:session, status} = useSession()
+  const [uid, setUid] = useState(null);
   const [languageinput, setLanguageinput] = useState(null);
   const [sortBy, setSortBy] = useState(null);
   const [allData, setAllData] = useState(null);
+
+  useEffect(() => {
+    if (session && status === "authenticated") {
+      let temp = session?.user?.image
+        .substring(40, 48)
+        .concat(`_${session?.user?.name}`.split(" ").join(""));
+      setUid(temp);
+  
+    }
+  }, [session, status]);
 
   console.log(languageinput, sortBy);
   const router = useRouter();
@@ -116,6 +128,8 @@ const Dashboard = () => {
                     pullRequest={data.pull_requests}
                     repositories={data.repositories}
                     starCount={data.stars_count}
+                    // repoId={Date.now()}
+                    uid={uid}
                   />
                 );
               })}

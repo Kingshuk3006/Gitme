@@ -4,6 +4,8 @@ import { VscIssues } from "react-icons/vsc";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { BiGitPullRequest, BiGitRepoForked } from "react-icons/bi";
 import { BsBookmark } from "react-icons/bs";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
 const Repocard = ({
   contributors,
@@ -12,9 +14,21 @@ const Repocard = ({
   pullRequest,
   repositories,
   starCount,
+  uid
 }) => {
+  console.log(uid)
 
-  
+  const handleBookmark = async () => {
+    await setDoc(doc(db, "users", uid, "bookmarks", `${uid}${Date.now()}`), {
+      contributors: contributors,
+      forkCount: forkCount,
+      issueCount: issueCount,
+      pullRequest: pullRequest,
+      repositories: repositories,
+      starCount: starCount,
+    });
+  };
+
   return (
     <div className="bg-inputBG md:p-8 p-4 text-white rounded-xl relative">
       <div className="space-y-6 pb-14 lg:pb-0">
@@ -29,7 +43,10 @@ const Repocard = ({
         </section>
         <section className="text-grey flex lg:flex-col  items-end lg:space-y-2 space-x-2 lg:space-x-0 absolute lg:top-0 lg:right-8 bottom-4 left-4">
           {/* <h1 className="font-Ralweay_thin">13th Aug 2022</h1> */}
-          <BsBookmark className="font-Ralweay_bold hover:text-white text-2xl" onClick={handleBookmark}/>
+          <BsBookmark
+            className="font-Ralweay_bold hover:text-white text-2xl"
+            onClick={handleBookmark}
+          />
         </section>
         <button className="bg-green px-4 py-2 rounded-xl text-white absolute bottom-8  md:right-8 right-4 ">
           See info
@@ -54,7 +71,7 @@ const Repocard = ({
             <BiGitRepoForked className="text-2xl" />
             <h1 className="text-xl font-Ralweay_thin">Forks</h1>
             <span className="bg-[#dcdf0688] rounded-full w-8 h-8 flex justify-center items-center font-Ralweay_bold absolute top-1 right-0 animate-pulse">
-             {forkCount}
+              {forkCount}
             </span>
           </section>
           <section className="flex justify-start space-x-2 items-center relative pt-6 pr-6 w-fit">

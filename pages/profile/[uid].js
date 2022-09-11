@@ -6,7 +6,7 @@ import Sidebar from "../../components/sidebar";
 import Repocard from "../../components/Repocard";
 import LowerNav from "../../components/LowerNav";
 import { useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
 import { AiOutlineLink } from "react-icons/ai";
 import Link from "next/link";
@@ -23,10 +23,11 @@ const Profile = () => {
   const [followers, setFollowers] = useState(0);
   const [following, setFollowing] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [bookmarks, setBookmarks] = useState([]);
   const router = useRouter();
-  const userId = router.query.uid
+  const userId = router.query.uid;
 
-  console.log(userId, "profile page")
+  console.log(userId, "profile page");
   const active = router.pathname;
 
   useEffect(() => {
@@ -69,12 +70,32 @@ const Profile = () => {
     setLoading(false);
   };
 
+  const fetchBookmarked = React.useCallback(async () => {
+    const data = [];
+    await getDocs(collection(db, "users", uid, "bookmarks"))
+      .then((snapshot) => {
+        snapshot.docs.map((doc) => {
+          data.push({ ...doc.data(), id: doc.id });
+        });
+        setBookmarks(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  React.useEffect(() => {
+    fetchBookmarked();
+  }, [fetchBookmarked]);
+
+  console.log(bookmarks,"svs")
+
   return (
     <div className="bg-bgDashboard min-h-screen font-Ralweay_medium">
       <Navbar session={session} status={status} />
       <div className="xl:mx-24 lg:mx-12 md:mx-16 sm:mx-8 mx-4 grid lg:grid-cols-5 gris-cols-1 justify-between gap-8">
         <div className="hidden lg:block">
-          <Sidebar active={active}/>
+          <Sidebar active={active} />
         </div>
 
         <div className="px-4 col-span-3 space-y-8">
@@ -83,13 +104,33 @@ const Profile = () => {
               Bookmarked Repositories
             </h1>
             <div>
-              <Repocard />
+              {bookmarks.length === 0 ? (
+                <div>Fethching Data</div>
+              ) : (
+                <div>
+                  {bookmarks?.map((data, i) => {
+                    return (
+                      <Repocard
+                        key={i}
+                        contributors={data.contributors}
+                        forkCount={data.forkCount}
+                        issueCount={data.issueCount}
+                        pullRequest={data.pullRequest}
+                        repositories={data.repositories}
+                        starCount={data.starCount}
+                        // repoId={Date.now()}
+                        uid={uid}
+                      />
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
         </div>
         {loading ? (
-          <div className="flex justify-center items-center"> 
-          <CircularProgress />
+          <div className="flex justify-center items-center">
+            <CircularProgress />
           </div>
         ) : (
           <div className="hidden lg:block space-y-6">
@@ -120,7 +161,6 @@ const Profile = () => {
             <div className="flex justify-center space-x-4">
               <section className="flex flex-col justify-center items-center">
                 <h1 className="text-center h-12 flex justify-center items-center text-white text-base">
-                 
                   Repositories
                 </h1>
                 <h1 className="text-2xl text-white">{userData?.repos}</h1>

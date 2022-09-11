@@ -29,7 +29,7 @@ export default function Home({ data, data2 }) {
     if (!userSnap.exists()) {
       await setDoc(doc(db, "users", uid), {
         name: session?.user?.name,
-        email: session?.user?.email,
+        // email: session?.user?.email,
         image: session?.user?.image,
         username: username,
         userID: uid,
