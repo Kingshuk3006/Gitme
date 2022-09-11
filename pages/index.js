@@ -83,7 +83,7 @@ export default function Home({ data, data2 }) {
   }
 
   return (
-    <div className="bg-bgHero xl:h-screen h-fit font-syncopate text-white space-y-8 px-4 pb-8">
+    <div className="bg-bgHero h-screen font-syncopate text-white space-y-8 px-4 pb-8">
       <Navbar session={session} status={status} />
       <div className="">
         <h1 className="lg:text-4xl md:text-3xl text-2xl text-center">
