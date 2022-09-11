@@ -1,6 +1,4 @@
 import { SvgButton } from "../styles/Mui-styles/HoverFillButton";
-// import Particles from "react-particles-js";
-// import { Particles } from "tsparticles";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { doc, getDoc, setDoc } from "firebase/firestore";
