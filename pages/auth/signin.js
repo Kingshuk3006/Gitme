@@ -4,7 +4,7 @@ import { getProviders, signIn as signIntoProvider } from "next-auth/react";
 
 
 const login = ({ providers }) => {
-    console.log(providers)
+    // console.log(providers)
   return (
     <div className="min-h-screen bg-bgDashboard relative">
       <div className="max-w-[1280px] xl:mx-auto lg:mx-16 md:mx-8 mx-8 py-8">

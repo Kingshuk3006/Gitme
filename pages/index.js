@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 export default function Home({ data, data2 }) {
-  console.log(data2);
+  // console.log(data2);
   const [userId, setUserId] = useState(false);
   const { data: session, status } = useSession();
   const [uid, setUid] = useState(null);
@@ -23,6 +23,8 @@ export default function Home({ data, data2 }) {
   const addNewUser = async () => {
     const userRef = doc(db, "users", uid);
     const userSnap = await getDoc(userRef);
+
+    console.log(session)
 
     if (!userSnap.exists()) {
       await setDoc(doc(db, "users", uid), {
@@ -61,7 +63,7 @@ export default function Home({ data, data2 }) {
       if (userId) {
         getUsername();
       }
-      // router.push('/repositories')
+      router.push('/repositories')
     }
   }, [session, status]);
 
@@ -97,7 +99,7 @@ export default function Home({ data, data2 }) {
         <img src="/heroimage.png" className="mx-auto w-[30rem]" />
       </div>
       <div className="text-center">
-        <Link href={userExists ? "/repositories" : "/auth/signin"}>
+        <Link href={session ? "/repositories" : "/auth/signin"}>
           <button className="btn-5 px-6 py-3 md:text-xl text-base">
             Get Started
           </button>
